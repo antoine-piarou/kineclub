@@ -29,26 +29,26 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
             {/* PAGE 1 - Cover & Charts */}
             <div className="w-[210mm] h-[297mm] bg-white flex flex-col relative overflow-hidden page-break-after">
                 {/* Clean Flat Header */}
-                <div className="h-[85mm] flex">
-                    <div className="w-1/2 bg-[#22d3ee] p-8 flex flex-col justify-between">
+                <div className="h-[65mm] flex bg-cyan-700">
+                    <div className="w-1/3 flex items-center justify-center p-8 border-r border-slate-200">
+                        <div className="text-center text-white">
+                            <h2 className="text-4xl font-bold  leading-tight mb-4 tracking-tight">
+                                Évaluation<br />physique
+                            </h2>
+                            <div className="inline-block border-2 border-white px-6 py-2">
+                                <p className="text-lg font-bold uppercase tracking-widest">par MKDE</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="w-2/3 p-8 flex flex-col justify-between bg-white/20">
                         <div>
-                            <h1 className="text-2xl font-bold mb-4 text-slate-900 tracking-tight">KineTeam</h1>
-                            <div className="space-y-1.5 text-slate-800">
+                            <h1 className="text-2xl font-bold mb-4 text-white tracking-tight">KineTeam</h1>
+                            <div className="space-y-1.5 text-white">
                                 <p className="font-bold text-sm">BOY Antoine, BROS Thomas, BARUSSEAU Corentin</p>
                                 <p className="text-sm font-medium">Kinésithérapeutes du sport</p>
                                 <p className="text-sm">1 rue Jean Nouailher 87000 Limoges</p>
                                 <p className="text-sm font-medium">kineteam87@gmail.com</p>
                                 <p className="text-sm font-bold">05 55 32 23 38</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="w-1/2 bg-[#ea580c] flex items-center justify-center p-8">
-                        <div className="text-center text-white">
-                            <h2 className="text-4xl font-black uppercase leading-tight mb-4 tracking-tight">
-                                ÉVALUATION<br />PHYSIQUE<br />D'EQUIPE
-                            </h2>
-                            <div className="inline-block border-2 border-white px-6 py-2">
-                                <p className="text-lg font-bold uppercase tracking-widest">par MKDE</p>
                             </div>
                         </div>
                     </div>
@@ -199,28 +199,9 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                                 <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Analyse de mouvement</h3>
                                 <div className="text-3xl font-black text-slate-900">8<span className="text-lg text-slate-400 font-medium">/10</span></div>
                             </div>
-                            <ul className="text-sm space-y-3 text-slate-700">
-                                <li className="flex items-start gap-3">
-                                    <CheckCircle2 className="w-5 h-5 text-slate-900 flex-shrink-0" />
-                                    <span>Très bonne amplitude</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <CheckCircle2 className="w-5 h-5 text-slate-900 flex-shrink-0" />
-                                    <span>Bonne répartition des charges</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                                    <span>Inclinaison antérieure du tronc surtout en lombaire</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                                    <span>Fente latérale droite moins bien stabilisée</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-slate-400 flex-shrink-0" />
-                                    <span>Orteils qui se lèvent en fin d'amplitude</span>
-                                </li>
-                            </ul>
+                            <div className="min-h-[50mm]">
+                                
+                            </div>
                         </div>
                     </div>
 
@@ -246,33 +227,14 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                 <div className="flex-1">
                     <div className="mb-12">
                         <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b border-slate-200 pb-4">Antécédents</h2>
-                        <div className="pl-4 border-l-2 border-slate-200">
-                            <ul className="text-sm space-y-2 text-slate-600">
-                                <li className="flex items-center gap-3">
-                                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
-                                    <span>Aucun antécédent déclaré</span>
-                                </li>
-                            </ul>
+                        <div className="pl-4 border-l-2 border-slate-200 min-h-[10mm]">
                         </div>
                     </div>
 
                     <div className="mb-12">
                         <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b border-slate-200 pb-4">Commentaires</h2>
-                        <div className="pl-4 border-l-2 border-slate-200">
-                            <ul className="text-sm space-y-4 text-slate-600">
-                                <li className="flex items-start gap-3">
-                                    <CheckCircle2 className="w-5 h-5 text-slate-900 mt-0.5 flex-shrink-0" />
-                                    <span className="font-bold text-slate-900">Bonnes capacités cardio-vasculaire, de mouvement et de vitesse.</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <AlertCircle className="w-5 h-5 text-slate-900 mt-0.5 flex-shrink-0" />
-                                    <span className="font-bold text-slate-900">Nécessité d'optimiser le mécanisme de recrutement musculaire.</span>
-                                </li>
-                                <li className="flex items-start gap-3">
-                                    <span className="w-1.5 h-1.5 bg-slate-300 rounded-full mt-2 flex-shrink-0"></span>
-                                    <span>Capacités physiques globales très bonnes comparé au niveau de votre champion. Se concentrer sur les aspects techniques pour gagner en niveau.</span>
-                                </li>
-                            </ul>
+                        <div className="pl-4 border-l-2 border-slate-200 min-h-[50mm]">
+                           
                         </div>
                     </div>
 
@@ -283,42 +245,19 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                         </div>
 
                         <div className="grid grid-cols-2 gap-8">
-                            <div className="bg-slate-50 p-6 border border-slate-200">
+                            <div className="bg-slate-50 p-6 border border-slate-200 min-h-[50mm]">
                                 <div className="flex items-center gap-3 mb-6">
                                     <Target className="w-6 h-6 text-slate-900" />
                                     <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Prioritaires</h3>
                                 </div>
-                                <ul className="text-sm space-y-4 text-slate-600">
-                                    <li className="flex items-start gap-3">
-                                        <span className="text-slate-400 font-bold">→</span>
-                                        <span>Évaluation du profil force/vitesse afin d'ajuster les principes de renforcement musculaire.</span>
-                                    </li>
-                                    <li className="flex items-start gap-3">
-                                        <span className="text-slate-400 font-bold">→</span>
-                                        <span>Renforcement du membre inférieur droit en charge, notamment mollet.</span>
-                                    </li>
-                                </ul>
+ 
                             </div>
 
-                            <div className="bg-slate-50 p-6 border border-slate-200">
+                            <div className="bg-slate-50 p-6 border border-slate-200 min-h-[50mm]">
                                 <div className="flex items-center gap-3 mb-6">
                                     <ClipboardList className="w-6 h-6 text-slate-900" />
                                     <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Secondaires</h3>
                                 </div>
-                                <ul className="text-sm space-y-4 text-slate-600">
-                                    <li className="flex items-start gap-3">
-                                        <span className="text-slate-400 font-bold">→</span>
-                                        <span>Travail de force globale corps complet.</span>
-                                    </li>
-                                    <li className="flex items-start gap-3">
-                                        <span className="text-slate-400 font-bold">→</span>
-                                        <span>Transferts verticalité/horizontalité. D'abord à basse vélocité puis à haute vitesse.</span>
-                                    </li>
-                                    <li className="flex items-start gap-3">
-                                        <span className="text-slate-400 font-bold">→</span>
-                                        <span>Travail mental sur la mise en charge du membre inférieur droit.</span>
-                                    </li>
-                                </ul>
                             </div>
                         </div>
                     </div>
