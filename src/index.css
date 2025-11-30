@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+    .page-break-after {
+        page-break-after: always;
+    }
+}
