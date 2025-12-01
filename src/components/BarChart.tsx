@@ -42,8 +42,8 @@ export const BarChart: React.FC<Props> = ({ playerMetrics, teamMetrics }) => {
             {
                 label: 'EQUIPE',
                 data: teamData,
-                backgroundColor: 'rgb(82, 180, 170)',
-                borderColor: 'rgb(13, 148, 136)',
+                backgroundColor: 'rgb(8, 145, 178)',
+                borderColor: 'rgb(8, 145, 178)',
                 borderWidth: 1,
             },
         ],

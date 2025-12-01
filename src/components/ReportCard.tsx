@@ -1,7 +1,8 @@
-import { forwardRef } from 'react';
+import React, { forwardRef } from 'react';
 import type { PlayerData, TeamData } from '../utils/excelParser';
 import { RadarChart } from './RadarChart';
 import { BarChart } from './BarChart';
+import logo from '../assets/logo.png';
 import {
     User,
     Heart,
@@ -10,8 +11,6 @@ import {
     Activity,
     Move,
     Target,
-    CheckCircle2,
-    AlertCircle,
     TrendingUp,
     ClipboardList
 } from 'lucide-react';
@@ -23,26 +22,31 @@ interface Props {
     teamName?: string;
 }
 
+const formatValue = (value: string | number): string | number => {
+    const num = typeof value === 'number' ? value : parseFloat(value);
+    if (isNaN(num)) return value;
+    // Arrondi à 2 décimales maximum, sans forcer les zéros inutiles
+    return parseFloat(num.toFixed(2));
+};
+
 export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, date = "28/08/2025", teamName = "Basket Club Test 2" }, ref) => {
     return (
-        <div ref={ref} className="bg-white font-sans text-slate-900">
+        <div ref={ref} className="bg-white font-sans text-cyan-900">
             {/* PAGE 1 - Cover & Charts */}
             <div className="w-[210mm] h-[297mm] bg-white flex flex-col relative overflow-hidden page-break-after">
                 {/* Clean Flat Header */}
-                <div className="h-[65mm] flex bg-cyan-700">
-                    <div className="w-1/3 flex items-center justify-center p-8 border-r border-slate-200">
-                        <div className="text-center text-white">
-                            <h2 className="text-4xl font-bold  leading-tight mb-4 tracking-tight">
-                                Évaluation<br />physique
-                            </h2>
-                            <div className="inline-block border-2 border-white px-6 py-2">
-                                <p className="text-lg font-bold uppercase tracking-widest">par MKDE</p>
-                            </div>
+                <div className="h-[50mm] flex bg-white">
+                    <div className="w-1/3 flex flex-col items-center justify-center p-8 border-r border-cyan-600/50">
+                        <div className="mb-4">
+                            <img
+                                src={logo}
+                                alt="Logo KineTeam"
+                                className="h-24 object-contain"
+                            />
                         </div>
                     </div>
-                    <div className="w-2/3 p-8 flex flex-col justify-between bg-white/20">
+                    <div className="w-2/3 p-8 flex flex-col justify-between bg-cyan-600">
                         <div>
-                            <h1 className="text-2xl font-bold mb-4 text-white tracking-tight">KineTeam</h1>
                             <div className="space-y-1.5 text-white">
                                 <p className="font-bold text-sm">BOY Antoine, BROS Thomas, BARUSSEAU Corentin</p>
                                 <p className="text-sm font-medium">Kinésithérapeutes du sport</p>
@@ -55,78 +59,79 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                 </div>
 
                 {/* Content Section */}
-                <div className="flex-1 p-8">
-                    <div className="grid grid-cols-2 gap-10 h-full">
-                        {/* Left Column: Radar Chart */}
-                        <div className="flex flex-col space-y-6">
-                            {/* Player Info - Minimalist */}
-                            <div className="border-l-4 border-slate-900 pl-4 py-1">
-                                <div className="grid grid-cols-1 gap-1">
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider w-16">Joueur</span>
-                                        <span className="text-lg font-bold text-slate-900">{player.name}</span>
-                                    </div>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider w-16">Equipe</span>
-                                        <span className="text-lg font-bold text-slate-900">{teamName}</span>
-                                    </div>
-                                    <div className="flex items-baseline gap-2">
-                                        <span className="text-xs font-bold text-slate-500 uppercase tracking-wider w-16">Date</span>
-                                        <span className="text-lg font-bold text-slate-900">{date}</span>
-                                    </div>
-                                </div>
+                <div className="flex-1 p-8 flex flex-col gap-6">
+                    {/* Zone haute : 3/4 graphique radar, 1/4 joueur + tableau des scores */}
+                    <div className="grid grid-cols-3 gap-8 flex-1">
+                        {/* 3/4 : Radar Chart */}
+                        <div className="col-span-2 flex flex-col">
+                            <div className="flex-1 relative min-h-[260px]">
+                                <RadarChart playerScores={player.scores} teamScores={team.scores} />
                             </div>
-
-                            {/* Radar Chart */}
-                            <div className="flex-1 flex flex-col">
-                                <div className="flex-1 relative min-h-[300px]">
-                                    <RadarChart playerScores={player.scores} teamScores={team.scores} />
+                            <div className="mt-4 flex justify-center gap-8 border-t border-cyan-600/50 pt-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-orange-500"></div>
+                                    <span className="text-xs font-bold text-cyan-800 uppercase tracking-wider">JOUEUR</span>
                                 </div>
-
-                                <div className="mt-4 flex justify-center gap-8 border-t border-slate-200 pt-4">
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 bg-[#1e3a8a]"></div>
-                                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">JOUEUR</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <div className="w-3 h-3 bg-[#dc2626]"></div>
-                                        <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">EQUIPE</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Score Reference Table - Clean */}
-                            <div className="border border-slate-200">
-                                <div className="grid grid-cols-2 bg-slate-100 border-b border-slate-200">
-                                    <div className="py-2 text-center font-bold text-slate-700 text-xs uppercase tracking-wider border-r border-slate-200">Score</div>
-                                    <div className="py-2 text-center font-bold text-slate-700 text-xs uppercase tracking-wider">Niveau</div>
-                                </div>
-                                <div className="divide-y divide-slate-200 text-sm">
-                                    {[
-                                        { score: '0-30', level: 'Loisir' },
-                                        { score: '30-50', level: 'Départ' },
-                                        { score: '50-70', level: 'Région' },
-                                        { score: '70-90', level: 'National' },
-                                        { score: '90-100', level: 'Pro' },
-                                    ].map((item, idx) => (
-                                        <div key={idx} className="grid grid-cols-2">
-                                            <div className="py-1.5 text-center font-medium text-slate-600 border-r border-slate-200">{item.score}</div>
-                                            <div className="py-1.5 text-center font-bold text-slate-800">{item.level}</div>
-                                        </div>
-                                    ))}
+                                <div className="flex items-center gap-2">
+                                    <div className="w-3 h-3 bg-cyan-600/100"></div>
+                                    <span className="text-xs font-bold text-cyan-800 uppercase tracking-wider">EQUIPE</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Right Column: Bar Chart */}
-                        <div className="flex flex-col h-full">
-                            <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-3">
-                                <TrendingUp className="w-5 h-5 text-slate-900" />
-                                <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Comparaison</h3>
+                        {/* 1/4 : Infos joueur + tableau des scores */}
+                        <div className="col-span-1 flex flex-col gap-4">
+                            {/* Player Info - Minimalist */}
+                            <div className="border-l-4 border-cyan-900 pl-4 py-3 bg-cyan-700/20">
+                                <div className="grid grid-cols-1 gap-1">
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider w-16">Joueur</span>
+                                        <span className="text-sm font-bold text-cyan-900 line-clamp-2">{player.name}</span>
+                                    </div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider w-16">Equipe</span>
+                                        <span className="text-sm font-bold text-cyan-900 line-clamp-2">{teamName}</span>
+                                    </div>
+                                    <div className="flex items-baseline gap-2">
+                                        <span className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider w-16">Date</span>
+                                        <span className="text-sm font-bold text-cyan-900">{date}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="h-[85mm]">
-                                <BarChart playerMetrics={player.metrics} teamMetrics={team.metrics} />
+
+                            {/* Score Reference Table - même design que l'encadré joueur */}
+                            <div className="border-l-4 border-cyan-900 bg-cyan-700/20 pl-4 pr-3 py-3">
+                                <div className="text-[10px] font-bold text-cyan-800 uppercase tracking-wider mb-2">
+                                    Niveaux de score
+                                </div>
+                                <div className="grid grid-cols-2 gap-y-1 text-[11px]">
+                                    <div className="font-bold text-cyan-900">Score</div>
+                                    <div className="font-bold text-cyan-900 text-right">Niveau</div>
+                                    {[
+                                        { score: '0 - 30', level: 'Loisir' },
+                                        { score: '30 - 50', level: 'Départ' },
+                                        { score: '50 - 70', level: 'Région' },
+                                        { score: '70 - 90', level: 'National' },
+                                        { score: '90 - 100', level: 'Pro' },
+                                    ].map((item, idx) => (
+                                        <React.Fragment key={idx}>
+                                            <div className="text-cyan-800">{item.score}</div>
+                                            <div className="text-cyan-800 text-right font-semibold">{item.level}</div>
+                                        </React.Fragment>
+                                    ))}
+                                </div>
                             </div>
+                        </div>
+                    </div>
+
+                    {/* Bas de page : graphique barres en pleine largeur */}
+                    <div className="mt-4">
+                        <div className="flex items-center gap-3 mb-3 border-b border-cyan-600/50 pb-2">
+                            <TrendingUp className="w-5 h-5 text-cyan-900" />
+                            <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Comparaison</h3>
+                        </div>
+                        <div className="h-[85mm]">
+                            <BarChart playerMetrics={player.metrics} teamMetrics={team.metrics} />
                         </div>
                     </div>
                 </div>
@@ -135,8 +140,8 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
             {/* PAGE 2 - Caractéristiques */}
             <div className="w-[210mm] h-[297mm] bg-white p-12 flex flex-col page-break-after">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight mb-4">Caractéristiques physiques</h2>
-                    <div className="w-16 h-1 bg-slate-900 mx-auto"></div>
+                    <h2 className="text-3xl font-black text-cyan-900 uppercase tracking-tight mb-4">Caractéristiques physiques</h2>
+                    <div className="w-16 h-1 bg-cyan-900 mx-auto"></div>
                 </div>
 
                 <div className="space-y-8 flex-1">
@@ -151,14 +156,14 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                     ].map((item, idx) => (
                         <div key={idx} className="flex gap-6 items-start group">
                             <div className="flex-shrink-0 pt-1">
-                                <item.icon className="w-8 h-8 text-slate-900 stroke-[1.5]" />
+                                <item.icon className="w-8 h-8 text-cyan-900 stroke-[1.5]" />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-base font-bold text-slate-900 mb-1 uppercase tracking-wide flex items-center gap-2">
-                                    <span className="text-slate-400 text-sm font-normal">{idx + 1}.</span>
+                                <h3 className="text-base font-bold text-cyan-900 mb-1 uppercase tracking-wide flex items-center gap-2">
+                                    <span className="text-cyan-800 text-sm font-normal">{idx + 1}.</span>
                                     {item.title}
                                 </h3>
-                                <p className="text-slate-600 text-xs leading-relaxed text-justify">{item.desc}</p>
+                                <p className="text-cyan-800 text-xs leading-relaxed text-justify">{item.desc}</p>
                             </div>
                         </div>
                     ))}
@@ -170,48 +175,42 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                 <div className="grid grid-cols-2 gap-12 flex-1">
                     {/* Left: Data Table */}
                     <div className="flex flex-col">
-                        <div className="mb-8 border-b border-slate-200 pb-4">
-                            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-1">Données des tests</h2>
-                            <p className="text-sm text-slate-500 font-medium">Date : {date}</p>
+                        <div className="mb-8 border-b border-cyan-600/50 pb-4">
+                            <h2 className="text-2xl font-black text-cyan-900 uppercase tracking-tight mb-1">Données des tests</h2>
+                            <p className="text-sm text-cyan-800 font-medium">Date : {date}</p>
                         </div>
 
-                        <div className="border border-slate-200">
-                            <div className="bg-slate-50 px-4 py-3 border-b border-slate-200">
-                                <div className="grid grid-cols-3 gap-4 text-slate-900 font-bold text-xs uppercase tracking-wider">
+                        <div className="border border-cyan-600/50">
+                            <div className="bg-cyan-600/10 px-4 py-3 border-b border-cyan-600/50">
+                                <div className="grid grid-cols-3 gap-4 text-cyan-900 font-bold text-xs uppercase tracking-wider">
                                     <div>Test</div>
                                     <div className="text-center">Joueur</div>
                                     <div className="text-center">Equipe</div>
                                 </div>
                             </div>
-                            <div className="divide-y divide-slate-100">
+                            <div className="divide-y divide-cyan-600/50">
                                 {player.metrics.slice(0, 15).map((metric, idx) => (
-                                    <div key={idx} className="grid grid-cols-3 gap-4 px-4 py-2 text-xs hover:bg-slate-50 transition-colors">
-                                        <div className="font-medium text-slate-600">{metric.name}</div>
-                                        <div className="text-center font-bold text-slate-900">{metric.value}</div>
-                                        <div className="text-center font-medium text-slate-500">{team.metrics[idx]?.value || '-'}</div>
+                                    <div key={idx} className="grid grid-cols-3 gap-4 px-4 py-2 text-xs hover:bg-cyan-600/10 transition-colors">
+                                        <div className="font-medium text-cyan-800">{metric.name}</div>
+                                        <div className="text-center font-bold text-cyan-900">
+                                            {formatValue(metric.value)}
+                                        </div>
+                                        <div className="text-center font-medium text-cyan-800">
+                                            {team.metrics[idx] ? formatValue(team.metrics[idx].value) : '-'}
+                                        </div>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-
-                        <div className="mt-10 p-6 bg-slate-50 border border-slate-100">
-                            <div className="flex items-center justify-between mb-4 border-b border-slate-200 pb-4">
-                                <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Analyse de mouvement</h3>
-                                <div className="text-3xl font-black text-slate-900">8<span className="text-lg text-slate-400 font-medium">/10</span></div>
-                            </div>
-                            <div className="min-h-[50mm]">
-                                
                             </div>
                         </div>
                     </div>
 
                     {/* Right: Reading Guide */}
                     <div className="flex flex-col">
-                        <div className="mb-8 border-b border-slate-200 pb-4">
-                            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight">Lecture du graphique</h2>
+                        <div className="mb-8 border-b border-cyan-600/50 pb-4">
+                            <h2 className="text-2xl font-black text-cyan-900 uppercase tracking-tight">Lecture du graphique</h2>
                         </div>
 
-                        <div className="space-y-8 text-sm text-slate-600 leading-relaxed text-justify">
+                        <div className="space-y-8 text-sm text-cyan-800 leading-relaxed text-justify">
                             <p>Pour prétendre à un niveau, il faut valider les conditions dans chaque caractéristique. Ainsi un joueur ayant 80 en vitesse et 40 sur toutes les caractéristiques ne pourra sûrement pas jouer en national, du moins pas dans ce sport.</p>
 
                             <p>Au basketball, il existe de grandes différences entre les postes. Ainsi un pivot n'aura pas à s'inquiéter autant de sa vitesse qu'un ailier, et inversement pour l'anatomie.</p>
@@ -220,43 +219,63 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                         </div>
                     </div>
                 </div>
+
+                {/* Analyse de mouvement en pleine largeur sous les deux colonnes */}
+                <div className="mt-10 p-6 bg-cyan-600/10 border border-cyan-600/50">
+                    <div className="flex items-center justify-between mb-4 border-b border-cyan-600/50 pb-4">
+                        <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Analyse de mouvement</h3>
+                        <div className="text-2xl font-black text-cyan-900">
+                            8<span className="text-2xl text-cyan-800 font-medium">/10</span>
+                        </div>
+                    </div>
+                    <div className="min-h-[50mm]">
+
+                    </div>
+                </div>
             </div>
 
             {/* PAGE 4 - Axes de progression */}
             <div className="w-[210mm] h-[297mm] bg-white p-12 flex flex-col">
-                <div className="flex-1">
-                    <div className="mb-12">
-                        <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b border-slate-200 pb-4">Antécédents</h2>
-                        <div className="pl-4 border-l-2 border-slate-200 min-h-[10mm]">
+                <div className="flex-1 space-y-8">
+                    {/* Antécédents */}
+                    <div className="bg-cyan-600/10 p-6 border border-cyan-600/50">
+                        <div className="flex items-center justify-between mb-4 border-b border-cyan-600/50 pb-4">
+                            <h2 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Antécédents</h2>
+                        </div>
+                        <div className="min-h-[35mm]">
+
                         </div>
                     </div>
 
-                    <div className="mb-12">
-                        <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-6 border-b border-slate-200 pb-4">Commentaires</h2>
-                        <div className="pl-4 border-l-2 border-slate-200 min-h-[50mm]">
-                           
+                    {/* Commentaires */}
+                    <div className="bg-cyan-600/10 p-6 border border-cyan-600/50">
+                        <div className="flex items-center justify-between mb-4 border-b border-cyan-600/50 pb-4">
+                            <h2 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Commentaires</h2>
+                        </div>
+                        <div className="min-h-[45mm]">
+
                         </div>
                     </div>
 
                     <div className="mb-12">
                         <div className="text-center mb-8">
-                            <h2 className="text-2xl font-black text-slate-900 uppercase tracking-tight mb-2">Axes de progression</h2>
-                            <div className="w-12 h-1 bg-slate-900 mx-auto"></div>
+                            <h2 className="text-2xl font-black text-cyan-900 uppercase tracking-tight mb-2">Axes de progression</h2>
+                            <div className="w-12 h-1 bg-cyan-900 mx-auto"></div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-8">
-                            <div className="bg-slate-50 p-6 border border-slate-200 min-h-[50mm]">
+                            <div className="bg-cyan-600/10 p-6 border border-cyan-600/50 min-h-[50mm]">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <Target className="w-6 h-6 text-slate-900" />
-                                    <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Prioritaires</h3>
+                                    <Target className="w-6 h-6 text-cyan-900" />
+                                    <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Prioritaires</h3>
                                 </div>
- 
+
                             </div>
 
-                            <div className="bg-slate-50 p-6 border border-slate-200 min-h-[50mm]">
+                            <div className="bg-cyan-600/10 p-6 border border-cyan-600/50 min-h-[50mm]">
                                 <div className="flex items-center gap-3 mb-6">
-                                    <ClipboardList className="w-6 h-6 text-slate-900" />
-                                    <h3 className="text-lg font-bold text-slate-900 uppercase tracking-tight">Secondaires</h3>
+                                    <ClipboardList className="w-6 h-6 text-cyan-900" />
+                                    <h3 className="text-lg font-bold text-cyan-900 uppercase tracking-tight">Secondaires</h3>
                                 </div>
                             </div>
                         </div>
@@ -264,14 +283,14 @@ export const ReportCard = forwardRef<HTMLDivElement, Props>(({ player, team, dat
                 </div>
 
                 {/* Minimalist Footer */}
-                <div className="h-16 flex border-t border-slate-200">
-                    <div className="w-1/2 flex items-center justify-center border-r border-slate-200">
+                <div className="h-16 flex border-t border-cyan-600/50">
+                    <div className="w-1/2 flex items-center justify-center border-r border-cyan-600/50">
                         <div className="text-center">
-                            <p className="text-sm font-black text-slate-900 uppercase tracking-wider">KineTeam</p>
+                            <p className="text-sm font-black text-cyan-900 uppercase tracking-wider">KineTeam</p>
                         </div>
                     </div>
-                    <div className="w-1/2 flex items-center justify-center bg-slate-50">
-                        <div className="text-center text-slate-500 text-xs font-medium">
+                    <div className="w-1/2 flex items-center justify-center bg-cyan-600/10">
+                        <div className="text-center text-cyan-800 text-xs font-medium">
                             <p>kineteam87@gmail.com • 05 55 32 23 38</p>
                         </div>
                     </div>

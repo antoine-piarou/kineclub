@@ -46,10 +46,10 @@ export const RadarChart: React.FC<Props> = ({ playerScores, teamScores }) => {
             {
                 label: 'EQUIPE',
                 data: teamData,
-                backgroundColor: 'rgba(0, 255, 234, 0.11)',
-                borderColor: 'rgb(13, 148, 136)',
+                backgroundColor: 'rgb(8, 145, 178, 0.1)',
+                borderColor: 'rgb(8, 145, 178)',
                 borderWidth: 2,
-                pointBackgroundColor: 'rgb(13, 148, 136)',
+                pointBackgroundColor: 'rgb(8, 145, 178)',
                 pointBorderColor: '#fff',
                 pointBorderWidth: 1,
                 pointRadius: 3,
